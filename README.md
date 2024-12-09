@@ -195,14 +195,8 @@ Binaries can be found in `.build/release` directory. For example:
 
 ## Unit Tests
 
-Before running the tests suite, you need to download test resources with this embedded script:
+In order to speed up development, unit tests have been removed from the project (for now).
 
-    ./test.sh
-
-Run the command:
-    
-    swift test
-    
 ## Documentation
 
 Documentation can be generated using `jazzy`:
@@ -236,33 +230,3 @@ DCMTK proposes also a server, for testing `cfind` program:
     dcmqrscp 11112 --log-level trace -c /path/to/config/dcmqrscp.cfg
 
 All the executables from both `DCMTK` and `dcm4chee` are very good reference for testing DICOM features.
-
-## Contributors
-
-* Rafaël Warnault <rw@opale.pro>
-* Paul Repain <pr@opale.pro>
-* Colombe Blachère
-
-## License
-
-MIT License
-
-Copyright (c) 2019 - OPALE, https://www.opale.fr
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
