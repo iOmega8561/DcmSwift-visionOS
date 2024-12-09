@@ -8,7 +8,6 @@
 
 import Foundation
 import CoreGraphics
-import UIKit
 
 extension CGBitmapInfo {
     public static var byteOrder16Host: CGBitmapInfo {
