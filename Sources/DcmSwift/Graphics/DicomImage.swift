@@ -7,26 +7,25 @@
 //
 
 import Foundation
-import Quartz
+import CoreGraphics
 
-
-
-#if os(macOS)
-import AppKit
-#elseif os(iOS)
 import UIKit
-#endif
 
+extension UIImage {
+    /// Converts `UIImage` to PNG data.
+    var png: Data? {
+        return self.pngData()
+    }
+}
 
-extension NSImage {
-    var png: Data? { tiffRepresentation?.bitmap?.png }
-}
-extension NSBitmapImageRep {
-    var png: Data? { representation(using: .png, properties: [:]) }
-}
 extension Data {
-    var bitmap: NSBitmapImageRep? { NSBitmapImageRep(data: self) }
+    /// Converts `Data` into a `CGImage`.
+    var cgImage: CGImage? {
+        let dataProvider = CGDataProvider(data: self as CFData)
+        return dataProvider.flatMap { CGImage(pngDataProviderSource: $0, decode: nil, shouldInterpolate: true, intent: .defaultIntent) }
+    }
 }
+
 /**
  DicomImage is a wrapper that provides images related features for the DICOM standard.
  Please refer to dicomiseasy : http://dicomiseasy.blogspot.com/2012/08/chapter-12-pixel-data.html
@@ -173,63 +172,22 @@ public class DicomImage {
         self.loadPixelData()
     }
 
-    
-
-    
-    
-    
-#if os(macOS)
-    /**
-     Creates an `NSImage` for a given frame
-     - Important: only for `macOS`
-     */
-    public func image(forFrame frame: Int = 0) -> NSImage? {
-        if !frames.indices.contains(frame) {
-            Logger.error("  -> No such frame (\(frame))")
-            return nil
-        }
-        
-        let size = NSSize(width: self.columns, height: self.rows)
-        let data = self.frames[frame]
-        
-        if TransferSyntax.transfersSyntaxes.contains(self.dataset.transferSyntax.tsUID) {
-            if let cgim = self.imageFromPixels(size: size, pixels: data.toUnsigned8Array(), width: self.columns, height: self.rows) {
-                return NSImage(cgImage: cgim, size: size)
-            }
-        }
-        else {
-            return NSImage(data: data)
-        }
-        
-        return nil
-    }
-    
-#elseif os(iOS)
-    /**
-     Creates an `UIImage` for a given frame
-     - Important: only for `iOS`
-     */
     public func image(forFrame frame: Int) -> UIImage? {
         if !frames.indices.contains(frame) { return nil }
 
-        let size = NSSize(width: self.columns, height: self.rows)
+        let size = CGSize(width: self.columns, height: self.rows)
         let data = self.frames[frame]
 
         if let cgim = self.imageFromPixels(size: size, pixels: data.toUnsigned8Array(), width: self.columns, height: self.rows) {
-            return UIImage(cgImage: cgim, size: size)
+            return UIImage(cgImage: cgim)
         }
 
         return nil
     }
-#endif
-    
-    
-    
-    
     
     // MARK: - Private
     
-    private func imageFromPixels(size: NSSize, pixels: UnsafeRawPointer, width: Int, height: Int) -> CGImage? {
+    private func imageFromPixels(size: CGSize, pixels: UnsafeRawPointer, width: Int, height: Int) -> CGImage? {
         var bitmapInfo:CGBitmapInfo = []
         //var __:UnsafeRawPointer = pixels
         
@@ -354,22 +312,15 @@ public class DicomImage {
                 url.appendPathComponent(baseFilename + String(frame) + ".png")
                 Logger.debug(url.absoluteString)
                 
-                image.setName(url.absoluteString)
+                // image.setName(url.absoluteString)
                 
-                // image() gives different class following the OS
-                #if os(macOS)
-                if let data = image.png {
-                    try? data.write(to: url)
-                }
-                #elseif os(iOS)
                 if let data = image.pngData() {
                     do {
-                        try? data.write(to: url)
-                    } catch let error as NSError {
+                        try data.write(to: url)
+                    } catch {
                         print(error)
                     }
                 }
-                #endif
             }
         }
     }

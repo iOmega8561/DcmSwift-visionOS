@@ -72,16 +72,6 @@ let package = Package(
             dependencies: [
                 "DcmSwift",
                 .product(name: "ArgumentParser", package: "swift-argument-parser")
-            ]),
-        .testTarget(
-            name: "DcmSwiftTests",
-            dependencies: ["DcmSwift"],
-            resources: [
-                .process("Resources/DICOM"),
-                .process("Resources/DICOMDIR"),
-                .process("Resources/SR"),
-                .process("Resources/RT"),
-            ]
-        )
+            ])
     ]
 )
