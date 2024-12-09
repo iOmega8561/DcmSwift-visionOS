@@ -1,12 +1,13 @@
-# DcmSwift
+# DcmSwift-visionOS
 
 DcmSwift is a (partial, work in progress) DICOM implementation written in Swift. It aims to provide minimal support for the DICOM standard, focusing primarily on the DICOM file format implementation. Other aspects of the standard like networking and imaging will certainly be addressed later. 
 
+This fork concentrates efforts on making the package comaptible and usable with visionOS 2.0+
+
 ## Requirements
 
-* MacOS 10.13
-* Xcode 12.4
-* Swift 5.3
+* VisionOS 2.0+
+* Xcode 16
 
 ## Dependencies
 
